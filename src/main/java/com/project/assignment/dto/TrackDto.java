@@ -5,16 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class PaperDto {
+public class TrackDto {
     private Long id;
     private String name;
-    private Long totalPage;
-    private String finalResult;
-    private String status;
-    private String trackName;
-    private List<AuthorDto> authorList;
-    private Long trackId;
 }

@@ -1,5 +1,6 @@
 package com.project.assignment.service;
 
+import com.project.assignment.dto.AuthorDto;
 import com.project.assignment.dto.PaperDto;
 import com.project.assignment.entity.PaperEntity;
 import com.project.assignment.repository.PaperRepository;
@@ -23,8 +24,10 @@ public class PaperService {
             paperEntity -> new PaperDto(
             paperEntity.getId(), paperEntity.getName(), paperEntity.getTotalPage(),
             paperEntity.getFinalResult(), paperEntity.getStatus(), paperEntity.getTrack().getName(),
-            paperEntity.getAuthorList().stream().map(authorEntity ->
-            userRepository.findById(authorEntity.getId()).get().getName()).toList().toString())
+            paperEntity.getAuthorList().stream().map(authorEntity -> new AuthorDto(
+            authorEntity.getId(), userRepository.findById(authorEntity.getId()).get().getName()
+            )).collect(Collectors.toList()),
+            paperEntity.getTrack().getId())
         ).collect(Collectors.toList());
         return paperDtoList;
     }
@@ -34,9 +37,9 @@ public class PaperService {
         PaperDto paperDto = new PaperDto(paperEntity.getId(), paperEntity.getName(),
             paperEntity.getTotalPage(), paperEntity.getFinalResult(),
             paperEntity.getStatus(), paperEntity.getTrack().getName(),
-            paperEntity.getAuthorList().stream().map(authorEntity ->
-            userRepository.findById(authorEntity.getId()).get().getName())
-            .toList().toString());
+            paperEntity.getAuthorList().stream().map(authorEntity -> new AuthorDto(
+            authorEntity.getId(), userRepository.findById(authorEntity.getId()).get().getName()
+            )).collect(Collectors.toList()), paperEntity.getTrack().getId());
         return paperDto;
     }
 }
