@@ -1,10 +1,12 @@
 package com.project.assignment.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
-@ConfigurationProperties(prefix = "author_2.datasource")
+@Component @Getter @Setter
+@ConfigurationProperties(prefix = "author2.datasource")
 public class Author2Details {
 
     private String url;

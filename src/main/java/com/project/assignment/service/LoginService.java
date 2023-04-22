@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 public class LoginService {
     @Autowired
     private UserRepository userRepository;
-    @Value("${spring.datasource.username}")
-    private String dbUsername;
-    @Value("${spring.datasource.password}")
-    private String dbPassword;
+//    @Value("${spring.datasource.username}")
+//    private String dbUsername;
+//    @Value("${spring.datasource.password}")
+//    private String dbPassword;
 
 
 

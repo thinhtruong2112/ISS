@@ -1,10 +1,12 @@
 package com.project.assignment.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
-@ConfigurationProperties(prefix = "track_chair_2.datasource")
+@Component @Getter @Setter
+@ConfigurationProperties(prefix = "trackchair2.datasource")
 public class TrackChair2Details {
     private String url;
     private String password;

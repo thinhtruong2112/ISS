@@ -1,5 +1,7 @@
 package com.project.assignment.security;
 
+import com.project.assignment.config.UserContextHolder;
+import com.project.assignment.constant.UserEnum;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,6 +41,38 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = jpaUserDetailsService.loadUserByUsername(username);
                 if (jwtUtils.validateToken(jwtToken, userDetails)) {
+                    switch (username) {
+                        case "author_1":
+                            UserContextHolder.setBranchContext(UserEnum.AUTHOR_1);
+                            break;
+                        case "author_2":
+                            UserContextHolder.setBranchContext(UserEnum.AUTHOR_2);
+                            break;
+                        case "reviewer_1":
+                            UserContextHolder.setBranchContext(UserEnum.REVIEWER_1);
+                            break;
+                        case "reviewer_2":
+                            UserContextHolder.setBranchContext(UserEnum.REVIEWER_2);
+                            break;
+                        case "editor_1":
+                            UserContextHolder.setBranchContext(UserEnum.EDITOR_1);
+                            break;
+                        case "editor_2":
+                            UserContextHolder.setBranchContext(UserEnum.EDITOR_2);
+                            break;
+                        case "track_chair_1":
+                            UserContextHolder.setBranchContext(UserEnum.TRACK_CHAIR_1);
+                            break;
+                        case "track_chair_2":
+                            UserContextHolder.setBranchContext(UserEnum.TRACK_CHAIR_2);
+                            break;
+                        case "program_chair_1":
+                            UserContextHolder.setBranchContext(UserEnum.PROGRAM_CHAIR_1);
+                            break;
+                        case "program_chair_2":
+                            UserContextHolder.setBranchContext(UserEnum.PROGRAM_CHAIR_2);
+                            break;
+                    }
                     UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());
