@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -103,8 +104,18 @@ public class PaperService {
         return paperDto;
     }
 
-    public List<ReviewDto> getAllReviewsByPaperId(Long id) {
-        List<ReviewerPaperEntity> reviewerPaperEntityList = reviewerPaperRepository.findByPaperId(id);
+    public List<ReviewDto> getAllReviewsByPaperId(Long id, Long userId) {
+        UserEntity userEntity = userRepository.findById(userId).orElseThrow();
+        List<ReviewerPaperEntity> reviewerPaperEntityList = null;
+        if (Objects.equals(userEntity.getRole(), "reviewer_role")) {
+            List<ReviewerPaperEntity> list = new ArrayList<>();
+            if (reviewerPaperRepository.findByPaperIdAndReviewerId(id, userId) != null) {
+                list.add(reviewerPaperRepository.findByPaperIdAndReviewerId(id, userId));
+            }
+            reviewerPaperEntityList = list;
+        } else {
+            reviewerPaperEntityList = reviewerPaperRepository.findByPaperId(id);
+        }
         List<ReviewDto> reviewDtoList = reviewerPaperEntityList.stream().map(
             reviewerPaperEntity -> new ReviewDto(
             reviewerPaperEntity.getId().getReviewerId(),

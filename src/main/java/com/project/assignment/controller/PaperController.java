@@ -76,10 +76,11 @@ public class PaperController {
         }
     }
 
-    @GetMapping("/{id}/reviews")
-    public ResponseEntity<?> getAllReviews(@PathVariable Long id) {
+    @GetMapping("/{id}/reviews/{userId}")
+    public ResponseEntity<?> getAllReviews(@PathVariable Long id,
+        @PathVariable Long userId) {
         try {
-            List<ReviewDto> reviewDtoList = paperService.getAllReviewsByPaperId(id);
+            List<ReviewDto> reviewDtoList = paperService.getAllReviewsByPaperId(id, userId);
             ReviewListResponse reviewListResponse = new ReviewListResponse(reviewDtoList);
             reviewListResponse.setMessage("Get all reviews by paper id successful.");
             return new ResponseEntity<>(reviewListResponse, HttpStatus.OK);
