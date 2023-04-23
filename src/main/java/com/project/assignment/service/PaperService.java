@@ -6,12 +6,10 @@ import com.project.assignment.dto.AuthorDto;
 import com.project.assignment.dto.PaperDto;
 import com.project.assignment.dto.ReviewDto;
 import com.project.assignment.dto.ReviewerDto;
-import com.project.assignment.entity.AuthorEntity;
-import com.project.assignment.entity.PaperEntity;
-import com.project.assignment.entity.ReviewerPaperEntity;
-import com.project.assignment.entity.TrackEntity;
+import com.project.assignment.entity.*;
 import com.project.assignment.exception.InternalServerException;
 import com.project.assignment.repository.*;
+import com.project.assignment.request.CreateReviewRequest;
 import com.project.assignment.request.UpdatePaperRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -33,6 +31,8 @@ public class PaperService {
     private AuthorRepository authorRepository;
     @Autowired
     private ReviewerPaperRepository reviewerPaperRepository;
+    @Autowired
+    private ReviewerRepository reviewerRepository;
 
     public List<PaperDto> getAllPapers() {
         List<PaperEntity> paperEntityList = paperRepository.findAll();
@@ -113,5 +113,24 @@ public class PaperService {
             reviewerPaperEntity.getCorrectness())
         ).collect(Collectors.toList());
         return reviewDtoList;
+    }
+
+    public ReviewDto createComment(Long id, CreateReviewRequest request) {
+        ReviewerPaperEntity reviewerPaperEntity =
+            reviewerPaperRepository.findByPaperIdAndReviewerId(id, request.getReviewerId());
+        if (reviewerPaperEntity == null) {
+            throw new InternalServerException("Paper is not assigned to you!");
+        } else {
+            reviewerPaperEntity.setAppropriateness(request.getAppropriateness());
+            reviewerPaperEntity.setContribution(request.getContribution());
+            reviewerPaperEntity.setCorrectness(request.getCorrectness());
+            reviewerPaperRepository.save(reviewerPaperEntity);
+        }
+        ReviewDto reviewDto = new ReviewDto(
+        reviewerPaperEntity.getId().getReviewerId(),
+        userRepository.findById(reviewerPaperEntity.getId().getReviewerId()).get().getName(),
+        reviewerPaperEntity.getAppropriateness(), reviewerPaperEntity.getContribution(),
+        reviewerPaperEntity.getCorrectness());
+        return reviewDto;
     }
 }

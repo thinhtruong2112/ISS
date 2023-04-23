@@ -41,7 +41,8 @@ public class LoginController {
             CustomUser user = (CustomUser) jpaUserDetailsService.loadUserByUsername(request.getUsername());
             String accessToken = jwtUtils.generateAccessToken(user);
             String refreshToken = jwtUtils.generateRefreshToken(user);
-            JwtDto jwtDto = new JwtDto(user.getName(), user.getUsername(), user.getRole(), accessToken, refreshToken);
+            JwtDto jwtDto = new JwtDto(user.getId(), user.getName(), user.getUsername(),
+                user.getRole(), accessToken, refreshToken);
             JwtResponse jwtResponse = new JwtResponse(jwtDto);
             jwtResponse.setMessage("Login successful.");
             return new ResponseEntity<>(jwtResponse, HttpStatus.OK);

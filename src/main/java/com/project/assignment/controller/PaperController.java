@@ -4,11 +4,9 @@ import com.project.assignment.dto.PaperDto;
 import com.project.assignment.dto.ReviewDto;
 import com.project.assignment.dto.ReviewerDto;
 import com.project.assignment.exception.InternalServerException;
+import com.project.assignment.request.CreateReviewRequest;
 import com.project.assignment.request.UpdatePaperRequest;
-import com.project.assignment.response.PaperListResponse;
-import com.project.assignment.response.PaperResponse;
-import com.project.assignment.response.ReviewListResponse;
-import com.project.assignment.response.ReviewerListResponse;
+import com.project.assignment.response.*;
 import com.project.assignment.service.PaperService;
 import com.project.assignment.service.ReviewerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +83,20 @@ public class PaperController {
             ReviewListResponse reviewListResponse = new ReviewListResponse(reviewDtoList);
             reviewListResponse.setMessage("Get all reviews by paper id successful.");
             return new ResponseEntity<>(reviewListResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new InternalServerException(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/reviews")
+    public ResponseEntity<?> createReview(
+        @PathVariable Long id,
+        @RequestBody CreateReviewRequest request) {
+        try {
+            ReviewDto reviewDto = paperService.createComment(id, request);
+            ReviewResponse reviewResponse = new ReviewResponse(reviewDto);
+            reviewResponse.setMessage("Create review successful.");
+            return new ResponseEntity<>(reviewResponse, HttpStatus.OK);
         } catch (Exception e) {
             throw new InternalServerException(e.getMessage());
         }

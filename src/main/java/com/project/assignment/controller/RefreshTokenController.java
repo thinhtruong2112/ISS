@@ -38,9 +38,10 @@ public class RefreshTokenController {
             UserDetails userDetails = jpaUserDetailsService.loadUserByUsername(username);
             if (jwtUtils.validateToken(refreshToken, userDetails)) {
                 String accessToken = jwtUtils.generateAccessToken(userDetails);
-                JwtDto jwtDto = new JwtDto(((CustomUser) userDetails).getName(),
-                        userDetails.getUsername(), ((CustomUser) userDetails).getRole(),
-                        accessToken, refreshToken);
+                JwtDto jwtDto = new JwtDto(((CustomUser) userDetails).getId(),
+                    ((CustomUser) userDetails).getName(),
+                    userDetails.getUsername(), ((CustomUser) userDetails).getRole(),
+                    accessToken, refreshToken);
                 JwtResponse jwtResponse = new JwtResponse(jwtDto);
                 jwtResponse.setMessage("Get new access token successful.");
                 return new ResponseEntity<>(jwtResponse, HttpStatus.OK);

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class JwtDto {
+    private Long id;
     private String name;
     private String username;
     private String role;
