@@ -37,7 +37,4 @@ public class PaperEntity {
         joinColumns = @JoinColumn(name = "paper_id", nullable = false),
         inverseJoinColumns = @JoinColumn(name = "author_id", nullable = false))
     private List<AuthorEntity> authorList;
-
-    @ManyToMany(mappedBy = "paperList")
-    private List<ReviewerEntity> reviewerList;
 }

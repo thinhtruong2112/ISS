@@ -18,10 +18,4 @@ public class ReviewerEntity {
     @ManyToOne
     @JoinColumn(name = "track_id")
     private TrackEntity track;
-
-    @ManyToMany
-    @JoinTable(name = "reviewer_paper",
-            joinColumns = @JoinColumn(name = "reviewer_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "paper_id", nullable = false))
-    private List<PaperEntity> paperList;
 }
